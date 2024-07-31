@@ -40,17 +40,31 @@ function createWeeklyForm() {
   Logger.log('Form created with URL: ' + form.getEditUrl());
   Logger.log('Form ID: ' + formId);
   
-  //share form
+  //share form with admins
 
   for(let i = 0; i<adminEmails.length; i++){
     shareFormWithAdmin(formId, adminEmails[i]);
   }
+
+  //share form with members
+  for(let i = 0; i<adminEmails.length; i++){
+    sendEmailWithFormLink(adminEmails[i], form.getPublishedUrl());
+  }
+
 }
 
 function shareFormWithAdmin(formId, email) {
   let file = DriveApp.getFileById(formId);
   file.addEditor(email);
   Logger.log('Form shared with ' + email + ' as an editor.');
+}
+
+function sendEmailWithFormLink(email, formUrl) {
+  var subject = "New MCRIC Session Form Created";
+  var body = "A new form has been created. Please fill it out using the following link:\n\n" + formUrl;
+
+  MailApp.sendEmail(email, subject, body);
+  Logger.log('Email sent to ' + email + ' with the form link.');
 }
 
 
