@@ -45,7 +45,6 @@ function createWeeklyForm() {
   for(let i = 0; i<adminEmails.length; i++){
     shareFormWithAdmin(formId, adminEmails[i]);
   }
-
 }
 
 function shareFormWithAdmin(formId, email) {
@@ -54,7 +53,9 @@ function shareFormWithAdmin(formId, email) {
   Logger.log('Form shared with ' + email + ' as an editor.');
 }
 
-function checkNumResponses() {
+
+//This part doesn't work yet idk how to set trigger onFormSubmit
+function checkNumResponses(e) {
   let formId = PropertiesService.getScriptProperties().getProperty('FORM_ID');
   if (!formId) {
     Logger.log('Form ID not found.');
@@ -62,6 +63,7 @@ function checkNumResponses() {
   }
 
   let form = FormApp.openById(formId);
+  Logger.log(Object.keys(e));
   let responses = form.getResponses();
   let names = new Set();
 
@@ -74,6 +76,7 @@ function checkNumResponses() {
 
   if (names.size >= maxUniqueResponses) {
     form.setAcceptingResponses(false);
-    Logger.log('Form closed after reaching 25 unique names.');
+    Logger.log('Form closed after reaching ' + maxUniqueResponses + ' unique names.');
   }
 }
+
